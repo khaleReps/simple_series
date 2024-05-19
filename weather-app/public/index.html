@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+  </head>
+  <body>
+    <h1>Weather App</h1>
+    <form id="weather-form">
+      <input type="text" id="city" placeholder="Enter city" required />
+      <button type="submit">Get Weather</button>
+    </form>
+    <div id="weather-result"></div>
+
+    <script>
+      document
+        .getElementById('weather-form')
+        .addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const city = document.getElementById('city').value;
+          try {
+            const response = await fetch(`/weather?city=${city}`);
+            const data = await response.json();
+            document.getElementById('weather-result').innerHTML = `
+          <h2>Weather in ${data.name}</h2>
+          <p>Temperature: ${data.main.temp}°C</p>
+          <p>Weather: ${data.weather[0].description}</p>
+        `;
+          } catch (error) {
+            document.getElementById('weather-result').innerHTML =
+              'Error fetching weather data';
+          }
+        });
+    </script>
+  </body>
+</html>
